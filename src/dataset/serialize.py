@@ -3,7 +3,7 @@
 
 import json
 import xml.etree.ElementTree as ET
-
+import sys
 import numpy as np
 
 from const import META_STRUCTURE_FORMAT
@@ -117,4 +117,10 @@ def dom_problem(instances, rule_groups):
             rule_j = ET.SubElement(rule_group_i, "Rule")
             rule_j.set("name", rule.name)
             rule_j.set("attr", rule.attr)
-    return ET.tostring(data)
+    if sys.version_info[0] == 2:
+        return ET.tostring(data)
+    elif sys.version_info[0] == 3:
+        return ET.tostring(data, encoding='unicode')
+    else:
+        print("Unknown python version!!")
+        exit()
