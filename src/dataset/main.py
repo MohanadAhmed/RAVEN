@@ -155,7 +155,7 @@ def fuse(args, all_configs):
             f.write(dom)
         if target == predicted:
             acc += 1
-    print "Accuracy: {}".format(float(acc) / (args.num_samples * len(all_configs)))
+    print ("Accuracy: {}".format(float(acc) / (args.num_samples * len(all_configs))))
 
 
 def separate(args, all_configs):
@@ -259,8 +259,13 @@ def separate(args, all_configs):
                 answer_j = copy.deepcopy(answer_AoT)
                 answer_j.sample_new(component_idx, attr_name, min_level, max_level, answer_AoT)
                 candidates.append(answer_j)
-
-            random.shuffle(candidates)
+            if sys.version_info[0] == 2:
+                random.shuffle(candidates)
+            elif sys.version_info[0] == 3:
+                random.shuffle(candidates, random.random)
+            else:
+                exit()
+            
             answers = []
             for candidate in candidates:
                 answers.append(render_panel(candidate))
@@ -284,7 +289,7 @@ def separate(args, all_configs):
             
             if target == predicted:
                 acc += 1
-        print "Accuracy of {}: {}".format(key, float(acc) / args.num_samples)
+        print("Accuracy of {}: {}".format(key, float(acc) / args.num_samples))
 
 
 def main():
